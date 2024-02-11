@@ -1,4 +1,4 @@
-import { Container, useToast } from "@chakra-ui/react";
+import { Box, Container, useToast } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { fetchMovies } from "./lib";
 import { DataSource, Movie } from "./interface";
@@ -47,11 +47,13 @@ function App() {
       <DataSourceMarker dataSource={dataSource} />
       <MovieGrid moviePages={moviePages} currentPage={currentPage} />
       {moviePages.length > 1 && (
-        <Paginator
-          pagesCount={moviePages.length}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <Box marginTop={10}>
+          <Paginator
+            pagesCount={moviePages.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </Box>
       )}
     </Container>
   );

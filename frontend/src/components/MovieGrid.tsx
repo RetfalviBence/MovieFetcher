@@ -11,7 +11,7 @@ export function MovieGrid({
 }) {
   return (
     <>
-      <SimpleGrid gap={6} columns={3}>
+      <SimpleGrid gap={6} columns={4}>
         {moviePages.length !== 0 &&
           moviePages[currentPage].map((movie: Movie) => (
             <GridItem key={movie.id}>
