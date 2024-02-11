@@ -2,9 +2,7 @@ const mongoose = require("mongoose");
 
 export async function connectToDatabase() {
   mongoose
-    .connect("mongodb://localhost:27017/db", {
-      useNewUrlParser: true,
-    })
+    .connect("mongodb://localhost:27017/db")
     .then(() => {
       console.log("Successfully connected to database");
     })

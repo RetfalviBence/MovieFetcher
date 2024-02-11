@@ -1,16 +1,19 @@
-import { incrementCacheCounter, resetCacheCounter } from "../lib/cacheCounter";
-import { getResponseByCache, saveResultToCache } from "../lib/dataHandler";
 import { DataSource } from "../interface";
 import { collectMoviePages } from "../lib/collectMoviePages";
+import { incrementCacheCounter } from "../db/actions/incrementCacheCounter";
+import { resetCacheCounter } from "../db/actions/resetCacheCounter";
+import { saveMovieSearch } from "../db/actions/saveMovieSearch";
+import { getMovieSearch } from "../db/actions/getMovieSearch";
+import { checkTimeStampIsTooOld } from "../lib/checkTimestampIsTooOld";
 
 export async function getMovies(searchText: string) {
-  const resultFromCache = getResponseByCache(searchText);
-  if (resultFromCache) {
-    incrementCacheCounter();
-    return { movies: resultFromCache, source: DataSource.CACHE };
+  const resultFromCache = await getMovieSearch(searchText);
+  if (resultFromCache && !checkTimeStampIsTooOld(resultFromCache.updatedAt)) {
+    await incrementCacheCounter();
+    return { movies: resultFromCache.movies, source: DataSource.CACHE };
   }
-  resetCacheCounter();
-  const resultFromDatabase = await collectMoviePages(searchText);
-  saveResultToCache(searchText, resultFromDatabase as any);
-  return { movies: resultFromDatabase, source: DataSource.DATABASE };
+  await resetCacheCounter();
+  const resultFromExternalAPI = await collectMoviePages(searchText);
+  await saveMovieSearch(searchText, resultFromExternalAPI);
+  return { movies: resultFromExternalAPI, source: DataSource.DATABASE };
 }

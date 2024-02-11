@@ -3,6 +3,7 @@ import cors from "cors";
 import { getMovies } from "./actions/getMovies";
 import { validateGetMoviesParameters } from "./lib/validateInputString";
 import { ValidationError, ExternalApiCallError } from "./lib/customErrrors";
+import { connectToDatabase } from "./db/db";
 
 const PORT = 3002;
 
@@ -26,5 +27,8 @@ app.get("/movies", async function (req, res) {
   }
 });
 
-app.listen(PORT);
-console.log(`App listening at port ${PORT}!`);
+(async function startApplication() {
+  await connectToDatabase();
+  app.listen(PORT);
+  console.log(`App listening at port ${PORT}!`);
+})();
