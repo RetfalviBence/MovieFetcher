@@ -3,7 +3,7 @@ import cors from "cors";
 import { getMovies } from "./actions/getMovies";
 import { validateGetMoviesParameters } from "./lib/validateInputString";
 import { ValidationError, ExternalApiCallError } from "./lib/customErrrors";
-import { connectToDatabase } from "./db/db";
+import { connectToDatabase } from "./db/connect";
 
 const PORT = 3002;
 
