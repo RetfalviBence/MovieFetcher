@@ -23,7 +23,7 @@ app.get("/movies", async function (req, res) {
     if (error instanceof ExternalApiCallError) {
       res.status(502).send("External API is unavailable!");
     }
-    res.status(500).send("Internal Server Error!");
+    throw error;
   }
 });
 
